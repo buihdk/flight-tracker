@@ -7,10 +7,15 @@ Run `cp .env.sample .env` to create an `.env` file and update the file according
 ![Demo](demo/flight-tracker-demo.gif)
 
 ### Console output
-<img src="demo/console.png" alt= "console output" width="700">
+<img src="demo/console.png" alt= "console output" width="780">
 
 ### Final result
-<img src="demo/final.png" alt= "console output" width="700">
+<img src="demo/final.png" alt= "console output" width="780">
+
+
+### Email
+<img src="demo/email.png" alt= "twilio sms" width="780">
 
 ### SMS
-<img src="demo/twilio.jpeg" alt= "twilio sms" width="400">
+<img src="demo/twilio-sms.jpeg" alt= "twilio sms" width="400">
+

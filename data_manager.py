@@ -3,8 +3,9 @@ import os
 import dotenv
 
 dotenv.load_dotenv()
-SHEETY_PRICES_ENDPOINT = os.getenv("SHEETY_PRICES_ENDPOINT")
 SHEETY_BEARER_TOKEN = os.getenv("SHEETY_BEARER_TOKEN")
+SHEETY_PRICES_ENDPOINT = os.getenv("SHEETY_PRICES_ENDPOINT")
+SHEETY_USERS_ENDPOINT = os.getenv("SHEETY_USERS_ENDPOINT")
 
 
 class DataManager:
@@ -36,3 +37,9 @@ class DataManager:
             headers=self.headers,
             json=new_data,
         )
+
+    def get_customer_emails(self):
+        response = requests.get(url=SHEETY_USERS_ENDPOINT, headers=self.headers)
+        data = response.json()
+        self.customer_data = data["users"]
+        return self.customer_data

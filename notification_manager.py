@@ -1,5 +1,5 @@
 from twilio.rest import Client
-
+import smtplib
 import dotenv
 import os
 
@@ -9,6 +9,9 @@ TWILIO_SID = os.getenv("TWILIO_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 TWILIO_VIRTUAL_NUMBER = os.getenv("TWILIO_VIRTUAL_NUMBER")
 TWILIO_VERIFIED_NUMBER = os.getenv("TWILIO_VERIFIED_NUMBER")
+MAIL_PROVIDER_SMTP_ADDRESS = os.getenv("MAIL_PROVIDER_SMTP_ADDRESS")
+MY_EMAIL = os.getenv("MY_EMAIL")
+MY_PASSWORD = os.getenv("MY_PASSWORD")
 
 
 class NotificationManager:
@@ -21,3 +24,31 @@ class NotificationManager:
             from_=TWILIO_VIRTUAL_NUMBER,
             to=TWILIO_VERIFIED_NUMBER,
         )
+
+    def send_emails(self, emails, message):
+        try:
+            if "gmail" in MAIL_PROVIDER_SMTP_ADDRESS:
+                with smtplib.SMTP_SSL(MAIL_PROVIDER_SMTP_ADDRESS, 465) as connection:
+                    connection.login(MY_EMAIL, MY_PASSWORD)
+                    for email in emails:
+                        connection.sendmail(
+                            from_addr=MY_EMAIL,
+                            to_addrs=email,
+                            msg=f"Subject:New Low Price Flight!\n\n{message}".encode(
+                                "utf-8"
+                            ),
+                        )
+            else:
+                with smtplib.SMTP(MAIL_PROVIDER_SMTP_ADDRESS) as connection:
+                    connection.starttls()
+                    connection.login(MY_EMAIL, MY_PASSWORD)
+                    for email in emails:
+                        connection.sendmail(
+                            from_addr=MY_EMAIL,
+                            to_addrs=email,
+                            msg=f"Subject:New Low Price Flight!\n\n{message}".encode(
+                                "utf-8"
+                            ),
+                        )
+        except Exception as e:
+            print("Connection error! Error: " + str(e))
